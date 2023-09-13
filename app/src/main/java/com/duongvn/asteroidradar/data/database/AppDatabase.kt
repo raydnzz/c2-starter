@@ -24,9 +24,7 @@ abstract class AppDatabase : RoomDatabase() {
         @Synchronized
         fun getInstance(context: Context): AppDatabase = INSTANCE ?: synchronized(this) {
             INSTANCE ?: Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME)
-                .build().also {
-                    INSTANCE = it
-                }
+                .build().also { INSTANCE = it }
         }
     }
 }
