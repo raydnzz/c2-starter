@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="listener"
+            type="com.duongvn.asteroidradar.ui.home.adapter.AsteroidAdapter.AsteroidAdapterListener" />
+
+        <variable
+            name="asteroid"
+            type="com.duongvn.asteroidradar.data.database.entity.Asteroid" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:foreground="?attr/selectableItemBackground"
+        android:onClick="@{() -> listener.onItemClick(asteroid)}"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{asteroid.name}"
+            android:textAllCaps="true"
+            android:textColor="#fdfdfd"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/img_status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="186844 (2004 GA1)" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{asteroid.closeApproachDate}"
+            android:textColor="#929397"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/img_status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_name"
+            tools:text="2023-07-18" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_status"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:contentDescription="@null"
+            android:src="@{ asteroid.potentiallyHazardous ? @drawable/ic_status_potentially_hazardous : @drawable/ic_status_normal }"
+            android:tint="@{ asteroid.potentiallyHazardous ? @color/hazardous : @color/white }"
+            app:layout_constraintBottom_toBottomOf="@id/tv_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_name"
+            tools:src="@drawable/ic_status_normal"
+            android:scrollbarStyle="outsideOverlay"
+            tools:tint="@color/hazardous" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

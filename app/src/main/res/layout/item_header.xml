@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="apod"
+            type="com.duongvn.asteroidradar.data.network.wapi.apod.Apod" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        app:displayImageOfDate="@{apod}"
+        android:layout_height="250dp">
+
+        <ImageView
+            android:id="@+id/img_for_day"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:loadImageOfDate="@{apod}"
+            android:contentDescription="@{apod.title}" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="#4D000000"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="20dp"
+            android:text="@string/image_of_the_day"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+</layout>

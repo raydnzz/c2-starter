@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="listener"
+            type="com.duongvn.asteroidradar.ui.detail.adapter.DetailAdapter.DetailAdapterListener" />
+
+        <variable
+            name="dto"
+            type="com.duongvn.asteroidradar.ui.detail.dto.DetailDto" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:foreground="?attr/selectableItemBackground"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{dto.key}"
+            android:textAllCaps="true"
+            android:textColor="#fdfdfd"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/img_status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="186844 (2004 GA1)" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{dto.value}"
+            android:textColor="#fdfdfd"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@id/img_status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_name"
+            tools:text="2023-07-18" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_status"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:contentDescription="@null"
+            app:layout_constraintBottom_toBottomOf="@id/tv_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_name"
+            android:src="@drawable/ic_help_circle"
+            android:visibility="@{dto.show ? View.VISIBLE : View.GONE}"
+            android:onClick="@{() -> dto.show ? listener.onItemClick() : null}"
+            android:scrollbarStyle="outsideOverlay"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
