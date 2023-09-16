@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.duongvn.asteroidradar.R
 import com.duongvn.asteroidradar.databinding.FragmentDetailBinding
 import com.duongvn.asteroidradar.ui.detail.adapter.DetailAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+
 
 class DetailFragment : Fragment() {
 
@@ -20,7 +23,7 @@ class DetailFragment : Fragment() {
 
     private val viewModel by viewModels<DetailViewModel>()
     private val detailAdapter = DetailAdapter {
-        MaterialAlertDialogBuilder(requireContext(), androidx.appcompat.R.style.AlertDialog_AppCompat_Light)
+        MaterialAlertDialogBuilder(ContextThemeWrapper(requireContext(), R.style.MyMaterialAlerDialog))
             .setMessage(MESSAGE)
             .setPositiveButton("Accept") { _, _ ->
                 // Don't something

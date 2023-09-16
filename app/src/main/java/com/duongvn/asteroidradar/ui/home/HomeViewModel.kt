@@ -27,47 +27,28 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 
 class HomeViewModel(
     private val asteroidUseCase: AsteroidUseCase
 ) : ViewModel() {
     private val _typeShow = MutableStateFlow(TypeShow.ALL)
-
-//    private val _asteroidList = asteroidUseCase.executeGetAsteroidFromLocal()
-//
-//    val asteroids = _typeShow.combine(_asteroidList) { type, asteroids ->
-//        when (type) {
-//            TypeShow.ALL -> asteroids
-//            TypeShow.TODAY -> asteroids.filter {
-//                it.closeApproachDate == getToday()
-//            }
-//
-//            TypeShow.WEEK -> asteroids.filter {
-//                checkWeek(it.closeApproachDate)
-//            }
-//        }
-//    }.asLiveData()
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
     private val _imageResult = MutableLiveData<Apod>()
     val imageResult: LiveData<Apod> = _imageResult
 
+    private val _FullAsteroiList = MutableLiveData<List<Asteroid>>()
+
     private val _AsteroiList = MutableLiveData<List<Asteroid>>()
     val asteroiList: LiveData<List<Asteroid>> = _AsteroiList
 
-//    private fun getToday(): String = dateFormat.format(Calendar.getInstance().time)
-
-//    private fun checkWeek(dateString: String): Boolean {
-//        val date = dateFormat.parse(dateString) ?: return false
-//        val now = Calendar.getInstance()
-//        if (date.before(now.time)) return false
-//        now.add(Calendar.DAY_OF_YEAR, NUMBER_DATE)
-//        if (date.after(now.time)) return false
-//        return true
-//    }
-
     fun setTypeShow(typeShow: TypeShow) {
         _typeShow.value = typeShow
+        _FullAsteroiList.value?.let {
+            _AsteroiList.value = getAsteroiByFilter(it)
+        }
     }
 
     fun fetchAsteroi() {
@@ -76,13 +57,35 @@ class HomeViewModel(
             val asteroids = responseLocal.await().first()
 
             if (asteroids.isNotEmpty()) {
-                _AsteroiList.value = asteroids
+                _FullAsteroiList.value = asteroids
+                _AsteroiList.value = getAsteroiByFilter(asteroids)
                 return@launch
             }
 
             val response = async { asteroidUseCase.executeGetAsteroidFromServer() }
-            _AsteroiList.value = response.await()
+            _FullAsteroiList.value = response.await()
+            _AsteroiList.value = getAsteroiByFilter(_FullAsteroiList.value!!)
         }
+    }
+
+    private fun getAsteroiByFilter(asteroids: List<Asteroid>) = when (_typeShow.value) {
+        TypeShow.ALL -> asteroids
+        TypeShow.TODAY -> asteroids.filter {
+            it.closeApproachDate == dateFormat.format(Calendar.getInstance().time)
+        }
+
+        TypeShow.WEEK -> asteroids.filter {
+            checkWeek(it.closeApproachDate)
+        }
+    }
+
+    private fun checkWeek(dateString: String): Boolean {
+        val date = dateFormat.parse(dateString) ?: return false
+        val now = Calendar.getInstance()
+        if (date.before(now.time)) return false
+        now.add(Calendar.DAY_OF_YEAR, 7)
+        if (date.after(now.time)) return false
+        return true
     }
 
     fun fetchImageOfDay() {
