@@ -54,7 +54,7 @@
             android:id="@+id/img_status"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:contentDescription="This is a status image"
+            android:contentDescription="@{ asteroid.potentiallyHazardous ? @string/potentially_hazardous_message : @string/potentially_normal_message }"
             android:src="@{ asteroid.potentiallyHazardous ? @drawable/ic_status_potentially_hazardous : @drawable/ic_status_normal }"
             android:tint="@{ asteroid.potentiallyHazardous ? @color/hazardous : @color/white }"
             app:layout_constraintBottom_toBottomOf="@id/tv_date"

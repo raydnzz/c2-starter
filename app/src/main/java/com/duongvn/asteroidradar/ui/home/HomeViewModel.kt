@@ -13,13 +13,11 @@ import com.duongvn.asteroidradar.data.database.AppDatabase
 import com.duongvn.asteroidradar.data.database.entity.Asteroid
 import com.duongvn.asteroidradar.data.datasource.apod.ApodDataSourceImpl
 import com.duongvn.asteroidradar.data.datasource.asteroid.AsteroidDataSourceImpl
-import com.duongvn.asteroidradar.data.datasource.feed.FeedDataSourceImpl
 import com.duongvn.asteroidradar.data.network.APIConfig
 import com.duongvn.asteroidradar.data.network.result.ResultAPI
 import com.duongvn.asteroidradar.data.network.wapi.apod.Apod
 import com.duongvn.asteroidradar.data.repositores.apod.ApodRepositoryImpl
 import com.duongvn.asteroidradar.data.repositores.asteroid.AsteroidRepositoryImpl
-import com.duongvn.asteroidradar.data.repositores.feed.FeedRepositoryImpl
 import com.duongvn.asteroidradar.domain.home.AsteroidUseCase
 import com.duongvn.asteroidradar.domain.home.AsteroidUseCaseImpl
 import kotlinx.coroutines.async
@@ -56,15 +54,8 @@ class HomeViewModel(
             val responseLocal = async { asteroidUseCase.executeGetAsteroidFromLocal() }
             val asteroids = responseLocal.await().first()
 
-            if (asteroids.isNotEmpty()) {
-                _FullAsteroiList.value = asteroids
-                _AsteroiList.value = getAsteroiByFilter(asteroids)
-                return@launch
-            }
-
-            val response = async { asteroidUseCase.executeGetAsteroidFromServer() }
-            _FullAsteroiList.value = response.await()
-            _AsteroiList.value = getAsteroiByFilter(_FullAsteroiList.value!!)
+            _FullAsteroiList.value = asteroids
+            _AsteroiList.value = getAsteroiByFilter(asteroids)
         }
     }
 
@@ -120,9 +111,6 @@ class HomeViewModel(
                         apodDataSource = ApodDataSourceImpl(
                             APIConfig.getInstance().appService
                         )
-                    ),
-                    FeedRepositoryImpl(
-                        feedDataSource = FeedDataSourceImpl(appAPI = APIConfig.getInstance().appService)
                     )
                 )
                 HomeViewModel(getAsteroidUseCase)

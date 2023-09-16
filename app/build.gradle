@@ -82,6 +82,9 @@ dependencies {
     // Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:$version_room"
 
+    // WorkManager
+    implementation "androidx.work:work-runtime-ktx:$version_work"
+
     // Glide
     implementation "com.github.bumptech.glide:glide:$version_glide"
     annotationProcessor "com.github.bumptech.glide:compiler:$version_glide"

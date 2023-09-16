@@ -16,7 +16,7 @@
             android:id="@+id/img_for_day"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@null"
+            android:contentDescription="@{ isPotentiallyHazardous ? @string/potentially_hazardous_message : @string/potentially_normal_message }"
             android:scaleType="centerCrop"
             android:src="@{isPotentiallyHazardous ? @drawable/ic_asteroid_hazardous : @drawable/ic_asteroid_safe}" />
     </FrameLayout>
