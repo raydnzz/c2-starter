@@ -1,10 +1,11 @@
 package com.duongvn.asteroidradar.application
 
 import android.app.Application
-import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import com.duongvn.asteroidradar.work.RefreshDataWorker
+import java.util.concurrent.TimeUnit
 
 class MyApplication : Application() {
 
@@ -12,7 +13,7 @@ class MyApplication : Application() {
         super.onCreate()
 
         val uploadWorkRequest: WorkRequest =
-            OneTimeWorkRequestBuilder<RefreshDataWorker>()
+            PeriodicWorkRequestBuilder<RefreshDataWorker>(24, TimeUnit.HOURS)
                 .build()
 
         WorkManager
